@@ -6,7 +6,7 @@ boolean multiPlayerPage = false;
 int X;
 int Y;
 
-Board board1;
+TetrisBoard board1;
 
 void setup(){
   size(1000,800);
@@ -14,7 +14,7 @@ void setup(){
   Y = height/2;
   int centerX = (width-10 * 30)/2;
   int centerY = (height-20 * 30)/2;
-  board1 = new Board(20,10,30,centerX,centerY);
+  board1 = new TetrisBoard(20,10,30,centerX,centerY);
 }
 
 void draw(){

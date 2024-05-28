@@ -1,4 +1,4 @@
-public class Board{
+public class TetrisBoard{
  int rows;
  int columns;
  int cellSize;
@@ -6,7 +6,7 @@ public class Board{
  int centerX;
  int centerY;
  
- Board(int rows, int columns, int cellSize, int centerX, int centerY){
+ TetrisBoard(int rows, int columns, int cellSize, int centerX, int centerY){
   this.rows = rows;
   this.columns = columns;
   this.cellSize = cellSize;
