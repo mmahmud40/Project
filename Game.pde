@@ -89,6 +89,14 @@ void draw(){
 
   if(selectionPage == true){
     background(0,0,100);
+    fill(0,177,0);
+    if(isMouseOver(X-300,Y-200,600,50) == true){
+      fill(82,100,74);
+    }
+    rect(X-300,Y-200,600,50);
+    fill(255);
+    textSize(65);
+    text("Singleplayer", X-100, Y-150);
   }
 }
 
@@ -105,5 +113,5 @@ void mouseClicked(){
   if(isMouseOver(X-65,Y+60,140,50) == true && starterPage == true){
     starterPage = false;
     selectionPage = true;
-}
+  }
 }
