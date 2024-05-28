@@ -89,14 +89,38 @@ void draw(){
 
   if(selectionPage == true){
     background(0,0,100);
+    
+    //singleplayer button
     fill(0,177,0);
-    if(isMouseOver(X-300,Y-200,600,50) == true){
+    if(isMouseOver(X-300,Y-200,600,75) == true){
       fill(82,100,74);
     }
-    rect(X-300,Y-200,600,50);
+    rect(X-300,Y-200,600,75);
     fill(255);
     textSize(65);
-    text("Singleplayer", X-100, Y-150);
+    text("Singleplayer", X-160, Y-140);
+    
+    
+    //multiplayer button
+    fill(0,177,0);
+    if(isMouseOver(X-300,Y,600,75) == true){
+      fill(82,100,74);
+    }
+    rect(X-300,Y,600,75);
+    fill(255);
+    textSize(65);
+    text("Multiplayer", X-160, Y+60);
+    
+    //back button
+    
+    fill(0,177,0);
+    if(isMouseOver(X+350,20,125,75) == true){
+      fill(82,100,74);
+    }
+    rect(X+350,20,125,75);
+    fill(255);
+    textSize(55);
+    text("Back", X+355, 80);
   }
 }
 
@@ -113,5 +137,11 @@ void mouseClicked(){
   if(isMouseOver(X-65,Y+60,140,50) == true && starterPage == true){
     starterPage = false;
     selectionPage = true;
+  }
+  
+  //switch from selection to starter
+  if(isMouseOver(X+350,20,125,75) == true && selectionPage == true){
+    starterPage = true;
+    selectionPage = false;
   }
 }
