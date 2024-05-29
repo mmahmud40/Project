@@ -5,8 +5,12 @@ boolean multiPlayerPage = false;
 
 int X;
 int Y;
+int blockX;
+int blockY;
 
 TetrisBoard board1;
+Block currentBlock;
+Generator gen;
 
 void setup(){
   size(1000,800);
@@ -15,6 +19,11 @@ void setup(){
   int centerX = (width-10 * 30)/2;
   int centerY = (height-20 * 30)/2;
   board1 = new TetrisBoard(20,10,30,centerX,centerY);
+  gen = new Generator();
+  currentBlock = gen.generateBlock();
+  blockX = 3;
+  blockY = 0;
+
 }
 
 void draw(){
@@ -27,6 +36,7 @@ void draw(){
   if(singlePlayerPage == true){
       background(0,0,100);
       board1.display();
+      drawBlock();
     }
   }
 
@@ -171,6 +181,28 @@ void displaySelectionPage(){
     text("Back", X+355, 80); 
 }
 
-void displayBoard(){
-  
+
+void drawBlock(){
+  int[][] shape = currentBlock.getShape();
+  int col = currentBlock.getColor();
+  fill(col);
+  for (int i = 0; i < shape.length; i++) {
+    for (int j = 0; j < shape[i].length; j++) {
+      if (shape[i][j] != 0) {
+        rect(board1.centerX + (blockX + j) * board1.cellSize, board1.centerY + (blockY + i) * board1.cellSize, board1.cellSize, board1.cellSize);
+      }
+    }
+  }
+}
+
+void keyPressed(){
+   if (key == 'a' || key == 'A') {
+    blockX -= 1;
+  } else if (key == 'd' || key == 'D') {
+    blockX += 1;
+  } else if (key == 's' || key == 'S') {
+    blockY += 1;
+  } else if (key == 'r' || key == 'R') {
+    currentBlock.rotate();
+  }
 }
