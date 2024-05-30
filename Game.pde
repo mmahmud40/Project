@@ -197,12 +197,68 @@ void drawBlock(){
 
 void keyPressed(){
    if (key == 'a' || key == 'A') {
-    blockX -= 1;
+    if(canMoveLeft()){
+      blockX -= 1;
+    }
   } else if (key == 'd' || key == 'D') {
-    blockX += 1;
+    if(canMoveRight()){ 
+      blockX += 1;
+    }
   } else if (key == 's' || key == 'S') {
-    blockY += 1;
+    if(canMoveDown()){
+      blockY += 1;
+    }
   } else if (key == 'r' || key == 'R') {
     currentBlock.rotate();
+  }else if (key == ' ') {
+    dropBlock();
+  }
+}
+
+boolean canMoveLeft(){
+   int[][] shape = currentBlock.getShape();
+   for(int i = 0; i < shape.length; i++){
+     for(int j = 0; j < shape[i].length;j++){
+       if(shape[i][j] != 0){
+         if(blockX + j - 1 < 0){
+           return false;
+       }
+      }
+     }
+    }
+  return true;
+}
+
+boolean canMoveRight(){
+   int[][] shape = currentBlock.getShape();
+   for(int i = 0; i < shape.length; i++){
+     for(int j = 0; j < shape[i].length;j++){
+       if(shape[i][j] != 0){
+         if(blockX + j + 1 >= board1.columns){
+           return false;
+       }
+      }
+     }
+    }
+  return true;
+}
+
+boolean canMoveDown(){
+   int[][] shape = currentBlock.getShape();
+   for(int i = 0; i < shape.length; i++){
+     for(int j = 0; j < shape[i].length;j++){
+       if(shape[i][j] != 0){
+         if(blockY + i + 1 >= board1.rows){
+           return false;
+       }
+      }
+     }
+    }
+  return true;
+}
+
+void dropBlock() {
+  while(canMoveDown()){
+    blockY += 1;
   }
 }
