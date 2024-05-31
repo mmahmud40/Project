@@ -35,5 +35,17 @@ public class TetrisBoard{
     }
   }
   
-  
+ 
+ void addBlock(Block block, int x, int y){
+   int[][] shape = block.getShape();
+   int col = block.getColor();
+   for (int i = 0; i < shape.length; i++) {
+      for (int j = 0; j < shape[i].length; j++) {
+        if (shape[i][j] != 0) {
+          board[y + i][x + j] = col;
+        }
+      }
+   }
+}
+
 }

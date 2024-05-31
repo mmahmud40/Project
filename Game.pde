@@ -12,6 +12,9 @@ TetrisBoard board1;
 Block currentBlock;
 Generator gen;
 
+int dropInterval = 1000; //for milliseconds
+int lastDropTime;
+
 void setup(){
   size(1000,800);
   X = width/2;
@@ -23,6 +26,8 @@ void setup(){
   currentBlock = gen.generateBlock();
   blockX = 3;
   blockY = 0;
+  
+  lastDropTime = millis();
 
 }
 
@@ -37,6 +42,18 @@ void draw(){
       background(0,0,100);
       board1.display();
       drawBlock();
+      
+      if(millis() - lastDropTime > dropInterval){
+          if(canMoveDown()){
+            blockY +=1; 
+          }else{
+           board1.addBlock(currentBlock, blockX, blockY);
+           currentBlock = gen.generateBlock();
+           blockX=3;
+           blockY=0;
+          }
+          lastDropTime = millis();
+      }
     }
   }
 
@@ -211,7 +228,14 @@ void keyPressed(){
   } else if (key == 'r' || key == 'R') {
     currentBlock.rotate();
   }else if (key == ' ') {
-    dropBlock();
+    while(canMoveDown()){
+     blockY += 1; 
+    }
+    board1.addBlock(currentBlock, blockX, blockY);
+    currentBlock = gen.generateBlock();
+    blockX=3;
+    blockY=0;
+    
   }
 }
 
