@@ -48,4 +48,34 @@ public class TetrisBoard{
    }
 }
 
+void clearCompletedRow(){
+  for(int i = 0; i < rows; i++){
+    boolean isComplete = true;
+    for(int j = 0; j < columns; j++){
+      if(board[i][j] == 0){
+        isComplete = false;
+        break;
+      }
+    }
+    if(isComplete == true){
+      clearRow(i);
+      score++;
+      i++;
+    }
+  }
+  
+}
+
+void clearRow(int row){
+  for(int i = row; i > 0; i--){
+    for(int j = 0; j < columns; j++){
+      board[i][j] = board[i -1][j];
+    }
+  }
+  for(int j = 0; j < columns; j++){
+    board[0][j] = 0;
+  }
+}
+
+
 }

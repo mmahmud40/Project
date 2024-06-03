@@ -15,6 +15,8 @@ Generator gen;
 int dropInterval = 1000; //for milliseconds
 int lastDropTime;
 
+int score = 0;
+
 void setup(){
   size(1000,800);
   X = width/2;
@@ -42,12 +44,14 @@ void draw(){
       background(0,0,100);
       board1.display();
       drawBlock();
+      displayScore();
       
       if(millis() - lastDropTime > dropInterval){
           if(canMoveDown()){
             blockY +=1; 
           }else{
            board1.addBlock(currentBlock, blockX, blockY);
+           board1.clearCompletedRow();
            currentBlock = gen.generateBlock();
            blockX=3;
            blockY=0;
@@ -244,7 +248,7 @@ boolean canMoveLeft(){
    for(int i = 0; i < shape.length; i++){
      for(int j = 0; j < shape[i].length;j++){
        if(shape[i][j] != 0){
-         if(blockX + j - 1 < 0){
+         if(blockX + j - 1 < 0 || board1.board[blockY + i][blockX + j - 1] != 0){
            return false;
        }
       }
@@ -258,7 +262,7 @@ boolean canMoveRight(){
    for(int i = 0; i < shape.length; i++){
      for(int j = 0; j < shape[i].length;j++){
        if(shape[i][j] != 0){
-         if(blockX + j + 1 >= board1.columns){
+         if(blockX + j + 1 >= board1.columns || board1.board[blockY + i][blockX + j + 1] != 0 ){
            return false;
        }
       }
@@ -272,7 +276,7 @@ boolean canMoveDown(){
    for(int i = 0; i < shape.length; i++){
      for(int j = 0; j < shape[i].length;j++){
        if(shape[i][j] != 0){
-         if(blockY + i + 1 >= board1.rows){
+         if(blockY + i + 1 >= board1.rows || board1.board[blockY + i + 1][blockX + j] != 0){
            return false;
        }
       }
@@ -285,4 +289,10 @@ void dropBlock() {
   while(canMoveDown()){
     blockY += 1;
   }
+}
+
+void displayScore(){
+  fill(255);
+  textSize(32);
+  text("Score: " + score, 10, 30);
 }
