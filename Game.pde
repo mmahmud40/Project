@@ -18,6 +18,7 @@ int dropInterval = 1000; //for milliseconds
 int lastDropTime;
 
 int score = 0;
+int highScore = 0;
 
 boolean gameOver = false;
 
@@ -93,6 +94,10 @@ void mouseClicked(){
     int centerX = (width-10 * 30)/2;
     int centerY = (height-20 * 30)/2;
     board1 = new TetrisBoard(20,10,30,centerX,centerY);
+    if (score > highScore){
+      highScore = score;
+    }
+    score = 0;
         }  
   }
   
@@ -305,6 +310,12 @@ void displayScore(){
   text("Score: " + score, 10, 30);
 }
 
+void displayHighScore(){
+  fill(255);
+  textSize(32);
+  text("High Score: " + highScore, 10, 60);
+}
+
 void displayNextBlock(){
   int nextBlockX = width - 150;
   int nextBlockY = 50;
@@ -342,6 +353,7 @@ void displaySinglePlayerPage(){
   board1.display();
   drawBlock();
   displayScore();
+  displayHighScore();
   displayNextBlock();
         
    if(millis() - lastDropTime > dropInterval){
