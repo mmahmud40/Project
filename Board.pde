@@ -77,5 +77,12 @@ void clearRow(int row){
   }
 }
 
-
+boolean isTopFull() {
+    for (int j = 0; j < columns; j++) {
+      if (board[0][j] != 0) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

@@ -10,12 +10,15 @@ int blockY;
 
 TetrisBoard board1;
 Block currentBlock;
+Block nextBlock;
 Generator gen;
 
 int dropInterval = 1000; //for milliseconds
 int lastDropTime;
 
 int score = 0;
+
+boolean gameOver = false;
 
 void setup(){
   size(1000,800);
@@ -26,6 +29,7 @@ void setup(){
   board1 = new TetrisBoard(20,10,30,centerX,centerY);
   gen = new Generator();
   currentBlock = gen.generateBlock();
+  nextBlock = gen.generateBlock();
   blockX = 3;
   blockY = 0;
   
@@ -42,24 +46,35 @@ void draw(){
   }
   if(singlePlayerPage == true){
       background(0,0,100);
-      board1.display();
-      drawBlock();
-      displayScore();
-      
-      if(millis() - lastDropTime > dropInterval){
-          if(canMoveDown()){
-            blockY +=1; 
-          }else{
-           board1.addBlock(currentBlock, blockX, blockY);
-           board1.clearCompletedRow();
-           currentBlock = gen.generateBlock();
-           blockX=3;
-           blockY=0;
-          }
-          lastDropTime = millis();
-      }
+      if(!gameOver){
+        board1.display();
+        drawBlock();
+        displayScore();
+        displayNextBlock();
+        
+        if(board1.isTopFull()){
+        gameOver = true;
+        displayLossScreen();
+        }  
+        
+        if(millis() - lastDropTime > dropInterval){
+            if(canMoveDown()){
+              blockY +=1; 
+            }else{
+             board1.addBlock(currentBlock, blockX, blockY);
+             board1.clearCompletedRow();
+             currentBlock = gen.generateBlock();
+             nextBlock = gen.generateBlock();
+             blockX=3;
+             blockY=0;
+            }
+            lastDropTime = millis();
+        }
+      }else{
+        displayLossScreen();
     }
   }
+}
 
 
 
@@ -90,6 +105,12 @@ void mouseClicked(){
     starterPage = false;
     singlePlayerPage = true;
   }
+  
+  //if(isMouseOver(350,425,300,50) == true && gameOver == true && singlePlayerPage == true){
+  //  gameOver = false;
+  //  singlePlayerPage = false;
+  //  selectionPage = true;
+  //}
   
 }
 
@@ -236,7 +257,9 @@ void keyPressed(){
      blockY += 1; 
     }
     board1.addBlock(currentBlock, blockX, blockY);
-    currentBlock = gen.generateBlock();
+    board1.clearCompletedRow();
+    currentBlock = nextBlock;
+    nextBlock = gen.generateBlock();
     blockX=3;
     blockY=0;
     
@@ -295,4 +318,37 @@ void displayScore(){
   fill(255);
   textSize(32);
   text("Score: " + score, 10, 30);
+}
+
+void displayNextBlock(){
+  int nextBlockX = width - 150;
+  int nextBlockY = 50;
+  int cellSize = board1.cellSize;
+  int[][] shape = nextBlock.getShape();
+  int col = nextBlock.getColor();
+  fill(col);
+  for(int i = 0; i < shape.length; i++){
+    for(int j = 0; j < shape[0].length; j++){
+      if(shape[i][j] != 0){
+        rect(nextBlockX + j * cellSize, nextBlockY + i * cellSize, cellSize, cellSize);
+      }
+    }
+  }
+  
+}
+
+void displayLossScreen() {
+  background(0);
+  fill(255);
+  textSize(50);
+  textAlign(CENTER, CENTER);
+  text("Game Over", width / 2, height / 2 - 50);
+  fill(0,177,0);
+    if(isMouseOver(350,425,300,50) == true){
+      fill(82,100,74);
+    };
+  rect(350,425,300,50);
+  fill(255);
+  textSize(30);
+  text("Return to main menu", width / 2, height / 2 + 50);
 }
