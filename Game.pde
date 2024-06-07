@@ -54,6 +54,9 @@ void draw(){
         
         if(board1.isTopFull()){
         gameOver = true;
+        int centerX = (width-10 * 30)/2;
+        int centerY = (height-20 * 30)/2;
+        board1 = new TetrisBoard(20,10,30,centerX,centerY);
         displayLossScreen();
         }  
         
@@ -105,12 +108,13 @@ void mouseClicked(){
     starterPage = false;
     singlePlayerPage = true;
   }
-  
-  //if(isMouseOver(350,425,300,50) == true && gameOver == true && singlePlayerPage == true){
-  //  gameOver = false;
-  //  singlePlayerPage = false;
-  //  selectionPage = true;
-  //}
+   
+  //go from loser screen to selection screen
+  if(isMouseOver(350,425,300,50) == true && gameOver == true && singlePlayerPage == true){
+    gameOver = false;
+    singlePlayerPage = false;
+    starterPage = true;
+  }
   
 }
 
