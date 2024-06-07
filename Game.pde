@@ -2,6 +2,7 @@ boolean starterPage = true;
 boolean selectionPage = false; 
 boolean singlePlayerPage = false;
 boolean multiPlayerPage = false; 
+boolean lossScreenPage = false;
 
 int X;
 int Y;
@@ -45,39 +46,14 @@ void draw(){
     displaySelectionPage();
   }
   if(singlePlayerPage == true){
-      background(0,0,100);
-      if(!gameOver){
-        board1.display();
-        drawBlock();
-        displayScore();
-        displayNextBlock();
-        
-        if(board1.isTopFull()){
-        gameOver = true;
-        int centerX = (width-10 * 30)/2;
-        int centerY = (height-20 * 30)/2;
-        board1 = new TetrisBoard(20,10,30,centerX,centerY);
-        displayLossScreen();
-        }  
-        
-        if(millis() - lastDropTime > dropInterval){
-            if(canMoveDown()){
-              blockY +=1; 
-            }else{
-             board1.addBlock(currentBlock, blockX, blockY);
-             board1.clearCompletedRow();
-             currentBlock = gen.generateBlock();
-             nextBlock = gen.generateBlock();
-             blockX=3;
-             blockY=0;
-            }
-            lastDropTime = millis();
-        }
-      }else{
-        displayLossScreen();
-    }
+     displaySinglePlayerPage();    
+     if(gameOver == true){
+       displayLossScreen();
+     }
   }
-}
+      
+  }
+
 
 
 
@@ -114,11 +90,16 @@ void mouseClicked(){
     gameOver = false;
     singlePlayerPage = false;
     starterPage = true;
+    int centerX = (width-10 * 30)/2;
+    int centerY = (height-20 * 30)/2;
+    board1 = new TetrisBoard(20,10,30,centerX,centerY);
+        }  
   }
   
-}
+
 
 void displayStarterPage(){
+  stroke(0);
   background(0,0,100);
   fill(0,0,200);
     rect(X-250,Y-250,500,10); // Top border
@@ -192,8 +173,8 @@ void displayStarterPage(){
 }
 
 void displaySelectionPage(){
+ stroke(0);
  background(0,0,100);
-    
     //singleplayer button
     fill(0,177,0);
     if(isMouseOver(X-300,Y-200,600,75) == true){
@@ -345,8 +326,7 @@ void displayLossScreen() {
   background(0);
   fill(255);
   textSize(50);
-  textAlign(CENTER, CENTER);
-  text("Game Over", width / 2, height / 2 - 50);
+  text("Game Over", 385, height / 2 - 50);
   fill(0,177,0);
     if(isMouseOver(350,425,300,50) == true){
       fill(82,100,74);
@@ -354,5 +334,31 @@ void displayLossScreen() {
   rect(350,425,300,50);
   fill(255);
   textSize(30);
-  text("Return to main menu", width / 2, height / 2 + 50);
+  text("Return to main menu", 365, height / 2 + 60);
+}
+
+void displaySinglePlayerPage(){
+  background(0,0,100);
+  board1.display();
+  drawBlock();
+  displayScore();
+  displayNextBlock();
+        
+   if(millis() - lastDropTime > dropInterval){
+     if(canMoveDown()){
+       blockY +=1; 
+      }else{
+         board1.addBlock(currentBlock, blockX, blockY);
+         board1.clearCompletedRow();
+         currentBlock = gen.generateBlock();
+         nextBlock = gen.generateBlock();
+         blockX=3;
+         blockY=0;
+       }
+       lastDropTime = millis();
+     }
+     
+     gameOver = board1.isTopFull();
+     
+        
 }
