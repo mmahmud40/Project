@@ -1,7 +1,6 @@
 boolean starterPage = true;
 boolean selectionPage = false; 
 boolean singlePlayerPage = false;
-boolean multiPlayerPage = false; 
 boolean lossScreenPage = false;
 
 int X;
@@ -10,6 +9,8 @@ int blockX;
 int blockY;
 
 TetrisBoard board1;
+TetrisBoard board2;
+TetrisBoard board3;
 Block currentBlock;
 Block nextBlock;
 Generator gen;
@@ -22,6 +23,10 @@ int highScore = 0;
 
 boolean gameOver = false;
 
+boolean beginner = false;
+boolean intermediate = false;
+boolean expert = false;
+
 void setup(){
   size(1000,800);
   X = width/2;
@@ -29,6 +34,8 @@ void setup(){
   int centerX = (width-10 * 30)/2;
   int centerY = (height-20 * 30)/2;
   board1 = new TetrisBoard(20,10,30,centerX,centerY);
+  board2 = new TetrisBoard(20, 10, 30, 200, centerY);
+  board3 = new TetrisBoard(20, 10, 30, 500 + 50, centerY); 
   gen = new Generator();
   currentBlock = gen.generateBlock();
   nextBlock = gen.generateBlock();
@@ -40,6 +47,8 @@ void setup(){
 }
 
 void draw(){
+  setDifficulty();
+  
   if(starterPage == true){
     displayStarterPage();
   }
@@ -55,6 +64,16 @@ void draw(){
       
   }
 
+
+void setDifficulty() {
+  if (beginner) {
+    dropInterval = 800; 
+  } else if (intermediate) {
+    dropInterval = 300; 
+  } else if (expert) {
+    dropInterval = 100;
+  }
+}
 
 
 
@@ -78,14 +97,34 @@ void mouseClicked(){
     selectionPage = false;
   }
   
-  //switch from selection to singleplayer
+  //switch from selection to singleplayer(easy)
   
   if(isMouseOver(X-300,Y-200,600,75) == true && selectionPage == true){
     selectionPage = false;
     starterPage = false;
     singlePlayerPage = true;
+    beginner = true;
   }
-   
+  
+  //switch from selection to singleplayer(med)
+  
+  if(isMouseOver(X-300,Y,600,75) == true && selectionPage == true){
+    selectionPage = false;
+    starterPage = false;
+    singlePlayerPage = true;
+    intermediate = true;
+  }
+  
+  //switch from selection to singleplayer(hard)
+  
+  if(isMouseOver(X-300,Y+200,600,75) == true && selectionPage == true){
+    selectionPage = false;
+    starterPage = false;
+    singlePlayerPage = true;
+    expert = true;
+  } 
+  
+  
   //go from loser screen to selection screen
   if(isMouseOver(350,425,300,50) == true && gameOver == true && singlePlayerPage == true){
     gameOver = false;
@@ -180,7 +219,7 @@ void displayStarterPage(){
 void displaySelectionPage(){
  stroke(0);
  background(0,0,100);
-    //singleplayer button
+    //beginner button
     fill(0,177,0);
     if(isMouseOver(X-300,Y-200,600,75) == true){
       fill(82,100,74);
@@ -188,10 +227,9 @@ void displaySelectionPage(){
     rect(X-300,Y-200,600,75);
     fill(255);
     textSize(65);
-    text("Singleplayer", X-160, Y-140);
+    text("Beginner", X-130, Y-140);
     
-    
-    //multiplayer button
+    //intermediate button
     fill(0,177,0);
     if(isMouseOver(X-300,Y,600,75) == true){
       fill(82,100,74);
@@ -199,7 +237,21 @@ void displaySelectionPage(){
     rect(X-300,Y,600,75);
     fill(255);
     textSize(65);
-    text("Multiplayer", X-160, Y+60);
+    text("Intermediate", X-170, Y+60);
+    
+    
+    //expert button
+    fill(0,177,0);
+    if(isMouseOver(X-300,Y+200,600,75) == true){
+      fill(82,100,74);
+    }
+    rect(X-300,Y+200,600,75);
+    fill(255);
+    textSize(65);
+    text("Expert", X-95, Y+260);
+    
+    
+    
     
     //back button
     
@@ -241,7 +293,7 @@ void keyPressed(){
       blockY += 1;
     }
   } else if (key == 'r' || key == 'R') {
-    currentBlock.rotate();
+    currentBlock.rotate(board1);
   }else if (key == ' ') {
     while(canMoveDown()){
      blockY += 1; 
@@ -358,7 +410,7 @@ void displaySinglePlayerPage(){
         
    if(millis() - lastDropTime > dropInterval){
      if(canMoveDown()){
-       blockY +=1; 
+         blockY +=1; 
       }else{
          board1.addBlock(currentBlock, blockX, blockY);
          board1.clearCompletedRow();
@@ -371,6 +423,5 @@ void displaySinglePlayerPage(){
      }
      
      gameOver = board1.isTopFull();
-     
-        
+    
 }

@@ -8,18 +8,32 @@
     this.currentColor = currentColor;
   }
   
-  void rotate() {
-    int n = shape.length;
-    int m = shape[0].length;
-    int[][] rotatedShape = new int[m][n];
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-        rotatedShape[j][n - 1 - i] = shape[i][j];
-      }
+ void rotate(TetrisBoard board) {
+    int[][] rotatedShape = new int[shape[0].length][shape.length];
+    for(int i = 0; i < shape.length; i++) {
+       for(int j = 0; j < shape[i].length; j++) {
+          rotatedShape[j][shape.length - 1 - i] = shape[i][j];
+       }
     }
-    shape = rotatedShape;
-  }
-  
+    if(isWithinBoard(board, rotatedShape)) {
+        shape = rotatedShape;
+    }
+}
+
+private boolean isWithinBoard(TetrisBoard board, int[][] rotatedShape) {
+    for(int i = 0; i < rotatedShape.length; i++) {
+       for(int j = 0; j < rotatedShape[i].length; j++) {
+          if (rotatedShape[i][j] != 0) {
+             int x = blockX + j;
+             int y = blockY + i;
+             if(x < 0 || x >= board.columns || y < 0 || y >= board.rows || board.board[y][x] != 0) {
+               return false;
+              }
+           }
+        }
+    }
+    return true;
+}
   
   int[][] getShape() {
     return shape;
