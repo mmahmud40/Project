@@ -9,8 +9,8 @@ int blockX;
 int blockY;
 
 TetrisBoard board1;
-TetrisBoard board2;
-TetrisBoard board3;
+
+
 Block currentBlock;
 Block nextBlock;
 Generator gen;
@@ -35,8 +35,8 @@ void setup(){
   int centerX = (width-10 * 30)/2;
   int centerY = (height-20 * 30)/2;
   board1 = new TetrisBoard(20,10,30,centerX,centerY);
-  board2 = new TetrisBoard(20, 10, 30, 200, centerY);
-  board3 = new TetrisBoard(20, 10, 30, 500 + 50, centerY); 
+
+
   gen = new Generator();
   currentBlock = gen.generateBlock();
   nextBlock = gen.generateBlock();
