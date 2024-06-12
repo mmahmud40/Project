@@ -12,7 +12,7 @@ public class Generator{
     int type = int(random(7));
     int[][] shape;
     int col;
-    
+     
     if(type == 0){
       shape = iShape;
       col = color(0,255,255);

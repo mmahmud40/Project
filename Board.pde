@@ -2,6 +2,7 @@ public class TetrisBoard{
  int rows;
  int columns;
  int cellSize;
+ int [][] colors;
  int[][] board;
  int centerX;
  int centerY;

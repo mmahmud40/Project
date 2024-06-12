@@ -15,7 +15,7 @@ Block currentBlock;
 Block nextBlock;
 Generator gen;
 
-int dropInterval = 1000; //for milliseconds
+int dropInterval;
 int lastDropTime;
 
 int score = 0;
@@ -26,6 +26,7 @@ boolean gameOver = false;
 boolean beginner = false;
 boolean intermediate = false;
 boolean expert = false;
+
 
 void setup(){
   size(1000,800);
@@ -86,7 +87,7 @@ boolean isMouseOver(int x, int y, int w, int h){
 
 void mouseClicked(){
   //switch from starter to selection
-  if(isMouseOver(X-65,Y+60,140,50) == true && starterPage == true){
+  if(isMouseOver(X-65,Y+95,140,50) == true && starterPage == true){
     starterPage = false;
     selectionPage = true;
   }
@@ -137,6 +138,9 @@ void mouseClicked(){
       highScore = score;
     }
     score = 0;
+    beginner = false;
+    intermediate = false;
+    expert = false;
         }  
   }
   
@@ -145,6 +149,7 @@ void mouseClicked(){
 void displayStarterPage(){
   stroke(0);
   background(0,0,100);
+  displayDesign();
   fill(0,0,200);
     rect(X-250,Y-250,500,10); // Top border
     rect(X-250,Y-250,10,170); // Left border
@@ -206,19 +211,24 @@ void displayStarterPage(){
     
     //PLay button
     fill(0,177,0);
-    if(isMouseOver(X-65,Y+60,140,50) == true){
+    if(isMouseOver(X-65,Y+95,140,50) == true){
       fill(82,100,74);
     }
-    rect(X-65,Y+60,140,50);
+    rect(X-65,Y+95,140,50);
     fill(255);
     textSize(40);
-    text("PLAY", X-37,Y+95);
+    text("PLAY", X-37,Y+130);
+    
+    
+  
     
 }
+
 
 void displaySelectionPage(){
  stroke(0);
  background(0,0,100);
+ displayDesign();
     //beginner button
     fill(0,177,0);
     if(isMouseOver(X-300,Y-200,600,75) == true){
@@ -359,13 +369,35 @@ void dropBlock() {
 void displayScore(){
   fill(255);
   textSize(32);
-  text("Score: " + score, 10, 30);
+  String scoreText = "Score: " + score;
+  float scoreTextWidth = textWidth(scoreText);
+  float scoreTextHeight = textAscent() + textDescent();
+  float scoreX = 20;
+  float scoreY = 60;
+  float padding = 10;
+  noFill();
+  stroke(255);
+  rect(scoreX - padding, scoreY - scoreTextHeight - padding, scoreTextWidth + 2 * padding, scoreTextHeight + 2 * padding);
+  fill(255);
+  text(scoreText, scoreX, scoreY);
+  
+  
 }
 
 void displayHighScore(){
   fill(255);
   textSize(32);
-  text("High Score: " + highScore, 10, 60);
+  String highScoreText = "High Score: " + highScore;
+  float highScoreTextWidth = textWidth(highScoreText);
+  float highScoreTextHeight = textAscent() + textDescent();
+  float highScoreX = 20;
+  float highScoreY = 120;
+  float padding = 10;
+  noFill();
+  stroke(255);
+  rect(highScoreX - padding, highScoreY - highScoreTextHeight - padding, highScoreTextWidth + 2 * padding, highScoreTextHeight + 2 * padding);
+  fill(255);
+  text(highScoreText, highScoreX, highScoreY);
 }
 
 void displayNextBlock(){
@@ -386,10 +418,11 @@ void displayNextBlock(){
 }
 
 void displayLossScreen() {
-  background(0);
-  fill(255);
-  textSize(50);
-  text("Game Over", 385, height / 2 - 50);
+  background(0,0,100);
+  displayDesign();
+  fill(222,0,0);
+  textSize(150);
+  text("Game Over", 165, height / 2 - 100 );
   fill(0,177,0);
     if(isMouseOver(350,425,300,50) == true){
       fill(82,100,74);
@@ -402,6 +435,7 @@ void displayLossScreen() {
 
 void displaySinglePlayerPage(){
   background(0,0,100);
+  displayDesign();
   board1.display();
   drawBlock();
   displayScore();
@@ -423,5 +457,46 @@ void displaySinglePlayerPage(){
      }
      
      gameOver = board1.isTopFull();
+    
+}
+
+void displayDesign(){
+    stroke(200);
+    
+    for(int i = 0; i < width/2 - 300; i += 30){
+      for(int j = height/2 + 100; j < height; j+=30){
+        fill(200,0,0);
+        rect(i,j,30,30);
+      }
+    }
+    
+    for(int i = width/2-290; i < width/2 - 100; i += 30){
+      for(int j = height/2 + 220; j < height; j+=30){
+        fill(0,200,0);
+        rect(i,j,30,30);
+      }
+    }
+    
+     for(int i = width/2-80; i < width/2 + 200; i += 30){
+      for(int j = height/2 + 310; j < height; j+=30){
+        fill(255,0,255);
+        rect(i,j,30,30);
+      }
+    }
+    
+     for(int i = width/2 + 100; i < width/2 + 290 ; i += 30){
+      for(int j = height/2 + 220; j < height; j+=30){
+        fill(0,200,0);
+        rect(i,j,30,30);
+      }
+    }
+    
+    for(int i = width/2 + 290; i < width; i += 30){
+      for(int j = height/2 + 100; j < height; j+=30){
+        fill(200,0,0);
+        rect(i,j,30,30);
+      }
+    }
+    
     
 }
